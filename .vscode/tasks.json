@@ -1,0 +1,12 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "transpile",
+			"problemMatcher": [],
+			"label": "npm: transpile",
+			"detail": "npx esbuild --bundle src/extension.ts --outfile=dist/extension.js --external:vscode --target=es2021 --format=cjs"
+		}
+	]
+}
