@@ -115,13 +115,15 @@ function needsTeamReview(pr: PrInfo): boolean {
 	return pr.authorAssociation === 'MEMBER'
 		&& !pr.isDraft
 		&& pr.reviewRequests.totalCount === 0
-		&& pr.reviews.totalCount === 0;
+		&& pr.reviews.totalCount === 0
+		&& pr.assignees.nodes.length === 0 || pr.assignees.nodes.some(a => a.login === pr.author.login); // our PR bot assigns the poster as owner, we use that as filter
 }
 
 type PrInfo = {
 	number: number;
 	author: { login: string; };
 	authorAssociation: 'MEMBER' | string;
+	assignees: { nodes: { login: string }[] }
 	createdAt: string;
 	isDraft: string;
 	reviewRequests: { totalCount: number; };
@@ -158,6 +160,11 @@ const query = `{
           author {
             login
           }
+          assignees(first:5) {
+            nodes {
+              login
+            }
+          }
           isDraft
           reviewRequests(last: 1) {
             totalCount
@@ -186,6 +193,11 @@ const check = `query validate($pr: Int!) {
       authorAssociation
       author {
         login
+      }
+      assignees(first:5) {
+        nodes {
+          login
+        }
       }
       isDraft
       reviewRequests(last: 1) {
