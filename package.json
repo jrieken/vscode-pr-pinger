@@ -10,15 +10,14 @@
   "repository": {
     "url": "https://github.com/jrieken/vscode-pr-pinger"
   },
-  "main": "out/extension.js",
-  "browser": "out/extension.js",
+  "browser": "dist/extension.js",
   "activationEvents": [
     "onStartupFinished"
   ],
   "scripts": {
     "vscode:prepublish": "npm run typecheck && npm run transpile",
-    "transpile": "npx esbuild --bundle src/extension.ts --outfile=dist/extension.js --external:vscode --target=es2021 --format=cjs",
-    "typecheck": "tsc -p ./src/"
+    "transpile": "npx esbuild --bundle src/extension.ts --outfile=dist/extension.js --external:vscode --target=es2021 --format=cjs  --sourcemap=external",
+    "typecheck": "tsc -p ./src/ --noEmit"
   },
   "author": "",
   "license": "MIT",
