@@ -10,20 +10,21 @@
   "repository": {
     "url": "https://github.com/jrieken/vscode-pr-pinger"
   },
-  "browser": "dist/extension.js",
+  "main": "out/extension.js",
   "activationEvents": [
     "onStartupFinished"
   ],
   "scripts": {
-    "vscode:prepublish": "npm run typecheck && npm run transpile",
-    "transpile": "npx esbuild --bundle src/extension.ts --outfile=dist/extension.js --external:vscode --target=es2021 --format=cjs  --sourcemap=external",
-    "typecheck": "tsc -p ./src/ --noEmit"
+    "vscode:prepublish": "npm run compile",
+    "watch": "tsc -p ./src/ --watch",
+    "compile": "tsc -p ./src/"
   },
   "author": "",
   "license": "MIT",
-  "devDependencies": {
-    "esbuild": "^0.15.10",
-    "typescript": "^4.4.3",
+  "dependencies": {
     "@octokit/graphql": "^5.0.1"
+  },
+  "devDependencies": {
+    "typescript": "^4.4.3"
   }
 }

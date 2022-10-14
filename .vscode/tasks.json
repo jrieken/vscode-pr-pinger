@@ -3,9 +3,12 @@
 	"tasks": [
 		{
 			"type": "npm",
-			"script": "transpile",
+			"script": "watch",
 			"problemMatcher": [],
-			"label": "npm: transpile",
+			"label": "npm: watch",
+			"runOptions": {
+				"runOn": "folderOpen"
+			}
 		}
 	]
 }

@@ -116,7 +116,7 @@ function needsTeamReview(pr: PrInfo): boolean {
 		&& !pr.isDraft
 		&& pr.reviewRequests.totalCount === 0
 		&& pr.reviews.totalCount === 0
-		&& pr.assignees.nodes.length === 0 || pr.assignees.nodes.some(a => a.login === pr.author.login); // our PR bot assigns the poster as owner, we use that as filter
+		&& pr.assignees.nodes.length === 1 && pr.assignees.nodes[0].login === pr.author.login; // our PR bot assigns the poster as owner -> we use that as filter
 }
 
 type PrInfo = {
