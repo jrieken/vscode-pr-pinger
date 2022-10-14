@@ -4,7 +4,6 @@
 		{
 			"type": "npm",
 			"script": "watch",
-			"problemMatcher": [],
 			"label": "npm: watch",
 			"runOptions": {
 				"runOn": "folderOpen"
