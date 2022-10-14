@@ -79,7 +79,7 @@ export function activate(context: vscode.ExtensionContext) {
 		const n = Math.floor(Math.random() * prs.length);
 		const pr = prs[n].pr;
 
-		item.text = `$(git-pull-request) #${pr.number}`;
+		item.text = makeLabel(pr);
 		item.tooltip = new vscode.MarkdownString(`[${pr.title}](${pr.url}) needs your review. Thanks $(heart-filled)`, true);
 		item.command = { command: 'pr.show', title: 'Show PR', arguments: [pr] };
 		item.backgroundColor = afterAway ? new vscode.ThemeColor('statusBarItem.warningBackground') : undefined;
@@ -109,6 +109,33 @@ export function activate(context: vscode.ExtensionContext) {
 
 	const handle = setInterval(updateItem, 1000 * 60 * 10); // update every 10 minutes
 	context.subscriptions.push(new vscode.Disposable(() => clearInterval(handle)));
+}
+
+function makeLabel(pr: PrInfo): string {
+	const style = vscode.workspace.getConfiguration('prpinger').get<'short' | 'number'>('presentation');
+	if (style === 'number') {
+		return `$(git-pull-request) #${pr.number}`;
+	}
+
+	const ignore = new Set(['`', '.', ':'])
+	const vowels = new Set(['a', 'e', 'i', 'o', 'u']);
+	const newTitle: string[] = [];
+	for (const ch of pr.title) {
+		if (ignore.has(ch)) {
+			break;
+		}
+		if (newTitle.length > 8 && !/\w/.test(ch)) {
+			break;
+		}
+		if (newTitle.length > 15) {
+			break;
+		}
+		if (!vowels.has(ch)) {
+			newTitle.push(ch);
+		}
+	}
+
+	return `$(git-pull-request) ${newTitle.join('')}`;
 }
 
 function needsTeamReview(pr: PrInfo): boolean {
